@@ -1,0 +1,44 @@
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3002',
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' }
+});
+
+export default api;
+
+export const getProducts = (params = {}) => api.get('/products', { params });
+export const getProduct = (id) => api.get(`/products/${id}`);
+export const getWishlist = () => api.get('/wishlist');
+const notifyWishlistChanged = () => window.dispatchEvent(new Event('shopkart:wishlist-updated'));
+
+export const addToWishlist = async (productId) => {
+  const response = await api.post(`/wishlist/${productId}`);
+  notifyWishlistChanged();
+  return response;
+};
+export const toggleWishlist = async (productId) => {
+  const response = await api.patch(`/wishlist/${productId}/toggle`);
+  notifyWishlistChanged();
+  return response;
+};
+export const removeFromWishlist = async (productId) => {
+  const response = await api.delete(`/wishlist/${productId}`);
+  notifyWishlistChanged();
+  return response;
+};
+
+export const getCart = () => api.get('/cart');
+export const addToCart = (productId) => api.post(`/cart/${productId}`);
+export const updateCartQuantity = (productId, quantity) => api.patch(`/cart/${productId}`, { quantity });
+export const removeFromCart = (productId) => api.delete(`/cart/${productId}`);
+
+export const createPaymentOrder = (shippingAddress, buyNow) => api.post('/orders/create-payment-order', {
+  shippingAddress,
+  ...(buyNow ? { buyNow: { productId: buyNow.productId, quantity: buyNow.quantity } } : {})
+});
+export const verifyPayment = (paymentDetails) => api.post('/orders/verify-payment', paymentDetails);
+export const getOrders = () => api.get('/orders');
+export const getOrder = (orderId) => api.get(`/orders/${orderId}`);
+export const advanceOrderStatus = (orderId, status) => api.patch(`/orders/${orderId}/status`, { status });
