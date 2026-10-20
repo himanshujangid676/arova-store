@@ -80,18 +80,7 @@ Arova pairs a React storefront with a Node.js and Express API backed by MongoDB.
 - A MongoDB database, either local or on MongoDB Atlas
 - A Razorpay account with Test Mode keys to try checkout (optional for browsing)
 
-### 1. Download the project
-
-Clone the repository using its GitHub URL, then open the project folder:
-
-```bash
-git clone https://github.com/Vyom-404/Arova.git
-cd Arova
-```
-
-Alternatively, download the repository as a ZIP from [GitHub](https://github.com/Vyom-404/Arova) and extract it.
-
-### 2. Configure the database and API
+### 1. Configure the database and API
 
 Install the backend dependencies and create its local environment file:
 
@@ -113,7 +102,7 @@ RAZORPAY_KEY_SECRET=your_test_mode_key_secret
 
 The API only accepts a key ID beginning with `rzp_test_`. Keep the key secret in the backend `.env`; it is never sent to the browser. The public test Key ID is returned to React only when starting Razorpay Checkout. The API uses Node's built-in `fetch` for Razorpay's Orders API. You can leave the example keys in place if you only want to browse the store; payment creation will require valid Test Mode credentials.
 
-### 3. Configure the client
+### 2. Configure the client
 
 Open a second terminal in the project folder and install the client dependencies:
 
@@ -125,7 +114,7 @@ cp .env.example .env
 
 For local development, the default `VITE_API_URL=http://localhost:3002` should match the backend port. If you change the backend port, update `PORT` in `backend/.env` and `VITE_API_URL` in `client/.env`.
 
-### 4. Start the application
+### 3. Start the application
 
 In the first terminal, start the API from the `backend` folder:
 
